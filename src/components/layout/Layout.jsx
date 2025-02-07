@@ -6,7 +6,7 @@ const Layout = ({ children }) => {
     <div
       className="d-flex flex-column min-vh-100"
       style={{
-        backgroundImage: `url('../../public/assets/background.jpg')`,
+        backgroundImage: `url('../../assets/background.jpg')`,
         backgroundRepeat: "no-repeat",
         backgroundSize: "cover",
         backgroundPosition: "center",

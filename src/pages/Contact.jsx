@@ -5,7 +5,7 @@ import * as Yup from "yup";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./style.css";
-import logo from "../../public/assets/Logo-dark.svg";
+import logo from "../../public/assets/Logo.svg";
 const Contact = () => {
   const formik = useFormik({
     initialValues: {
