@@ -1,11 +1,11 @@
 import Layout from "../components/layout/Layout";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./style.css";
 import logo from "../../public/assets/Logo.svg";
+import ContactService from "../services/contact.service";
 const Contact = () => {
   const formik = useFormik({
     initialValues: {
@@ -17,6 +17,8 @@ const Contact = () => {
       product_segment: "",
       certifying_agency_name: "",
       no_of_product: "",
+      website_url:"",
+
     },
     validationSchema: Yup.object({
       name: Yup.string().required("Please enter your name").min(3, "Too short"),
@@ -40,9 +42,9 @@ const Contact = () => {
     onSubmit: async (values, { setSubmitting, resetForm }) => {
       try {
         setSubmitting(true);
-        await new Promise((resolve) => setTimeout(resolve, 3000));
+        await ContactService.addUser(values);
         console.log(values);
-        toast.success("User added successfully");
+        toast.success("Data saved successfully!");
         resetForm();
       } catch (error) {
         toast.error("Something went wrong");
@@ -50,10 +52,9 @@ const Contact = () => {
         setSubmitting(false);
       }
     },
-    validateOnChange: false, // Prevent validation on change
-    validateOnBlur: false, // Prevent validation on blur
+    validateOnChange: false,
+    validateOnBlur: false,
   });
-
   return (
     <Layout>
       <div className="container">
@@ -61,7 +62,10 @@ const Contact = () => {
           <div className="col-sm-4"></div>
           <div className="col-sm-8">
             <div className="card">
-              <div className="card-header">
+              <div
+                className="card-header"
+                style={{ "background-color": "white" }}
+              >
                 <h3 className="text-center mt-3">
                   <img src={logo} alt="" />
                 </h3>
@@ -89,7 +93,6 @@ const Contact = () => {
                         )}
                       </div>
                     </div>
-
                     {/* Phone */}
                     <div className="col-sm-6">
                       <div className="form-group">
@@ -110,7 +113,6 @@ const Contact = () => {
                         )}
                       </div>
                     </div>
-
                     {/* Email */}
                     <div className="col-sm-6">
                       <div className="form-group">
@@ -131,7 +133,6 @@ const Contact = () => {
                         )}
                       </div>
                     </div>
-
                     {/* Name of Brand */}
                     <div className="col-sm-6">
                       <div className="form-group">
@@ -153,7 +154,6 @@ const Contact = () => {
                           )}
                       </div>
                     </div>
-
                     {/* Designation */}
                     <div className="col-sm-6">
                       <div className="form-group">
@@ -178,12 +178,11 @@ const Contact = () => {
                           )}
                       </div>
                     </div>
-
                     {/* Product Segment (Radio Buttons) */}
                     <div className="col-sm-6">
                       <div className="form-group">
                         <label className="form-label mt-2">
-                          Product Segment
+                          Product Segment if organic or not
                         </label>
                         <div>
                           <div className="form-check form-check-inline">
@@ -219,7 +218,6 @@ const Contact = () => {
                           )}
                       </div>
                     </div>
-
                     {/* Certifying Agency Name */}
                     <div className="col-sm-6">
                       <div className="form-group">
@@ -243,9 +241,29 @@ const Contact = () => {
                           )}
                       </div>
                     </div>
-
-                    {/* Number of Products */}
+                    {/* Website */}
                     <div className="col-sm-6">
+                      <div className="form-group">
+                        <label className="form-label mt-2">Website URL</label>
+                        <input
+                          type="text"
+                          name="website_url"
+                          className="form-control rounded"
+                          onChange={formik.handleChange}
+                          onBlur={formik.handleBlur}
+                          value={formik.values.website_url}
+                          placeholder="Enter certifying agency name"
+                        />
+                        {formik.touched.website_url &&
+                          formik.errors.website_url && (
+                            <span className="text-danger">
+                              {formik.errors.website_url}
+                            </span>
+                          )}
+                      </div>
+                    </div>
+                    {/* Number of Products */}
+                    <div className="col-sm-12">
                       <div className="form-group">
                         <label className="form-label mt-2">
                           Number of Products
@@ -267,11 +285,11 @@ const Contact = () => {
                           )}
                       </div>
                     </div>
-
                     <div className="text-end mt-4">
                       <button
                         className="btn btn-outline-warning px-5 py-2"
-                        type="submit"
+                        type="button"
+                        onClick={() => formik.resetForm()}
                       >
                         Reset
                       </button>
@@ -287,9 +305,6 @@ const Contact = () => {
                 </form>
                 <ToastContainer />
               </div>
-              <div className="card-footer">
-                <h6 className="text-center mt-3">All rights are reserved</h6>
-              </div>
             </div>
           </div>
         </div>
@@ -297,5 +312,4 @@ const Contact = () => {
     </Layout>
   );
 };
-
 export default Contact;
